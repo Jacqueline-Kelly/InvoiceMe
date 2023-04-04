@@ -132,11 +132,8 @@ const updateInvoice = asyncHandler(async(req, res) => {
     const queryDoc = await getDocs(q);
     const docId = queryDoc.docs[0].id;
     
-    if (user) {
-      userId = user.uid ;
-    } else {
-      userId = queryDoc.docs[0].ref.parent.parent.id ;
-    }
+    userId = queryDoc.docs[0].ref.parent.parent.id;
+    
     req.body.date = Timestamp.fromDate(new Date(req.body.date));
     await updateDoc(doc(db, "users", userId, "invoices", docId), req.body);
     res.status(200).send("Invoice successfully updated.");
@@ -156,11 +153,7 @@ const markAsCompensated = asyncHandler(async(req,res) => {
     const queryDoc = await getDocs(q);
     const docId = queryDoc.docs[0].id ;
 
-    if (user) {
-      userId = user.uid;
-    } else {
-      userId = queryDoc.docs[0].ref.parent.parent.id;
-    }
+    userId = queryDoc.docs[0].ref.parent.parent.id;
 
     await updateDoc(doc(db, "users", userId, "invoices", docId), {"compensated": true});
 
