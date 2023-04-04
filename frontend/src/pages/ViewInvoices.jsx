@@ -7,10 +7,11 @@ import LoadingIcons from 'react-loading-icons'
 import { toast } from 'react-toastify'
 import { getEmployees } from "../features/auth/authSlice";
 import FileExport from "../components/FileExport"
+import { resetUpdateCompensate } from "../features/invoice/InvoiceSlice";
 
 function ViewInvoices() {
     const dispatch = useDispatch() ;
-    const { invoice, isViewsDone, isUpdateDone, isError, isLoading, message } = useSelector((state) => state.invoice) ;
+    const { invoice, isViewsDone, isUpdateDone, isError, isLoading, message, compensateUpdateDone } = useSelector((state) => state.invoice) ;
     const { user, employees } = useSelector((state) => state.auth) ;
 
     const [searchParameters, setSearchParameters] = useState({
@@ -52,21 +53,25 @@ function ViewInvoices() {
         else if (dateFrom <= dateTo) {
             dispatch(viewInvoices({"dateFrom": new Date(dateFrom), "dateTo": new Date(dateTo), "employeeList": employeeList, "email": user.email, "position": user.position}));
         }
-
     }
 
     useEffect(() => {
         dispatch(getEmployees());
-        if(isViewsDone && invoice) {
+        if (isViewsDone && invoice) {
             setView(true);
         };
-        if(isUpdateDone && message) {
+        if (isUpdateDone && message) {
             dispatch(viewInvoices({"dateFrom": new Date(dateFrom), "dateTo": new Date(dateTo), "employeeList": employeeList, "email": user.email, "position": user.position}));
             toast.success(message);
             setView(true);
         }
-        if(isError) {
+        if (isError) {
             toast.error(message);
+        }
+        if (compensateUpdateDone) {
+            toast.success(message);
+            dispatch(viewInvoices({"dateFrom": new Date(dateFrom), "dateTo": new Date(dateTo), "employeeList": employeeList, "email": user.email, "position": user.position}));
+            dispatch(resetUpdateCompensate());
         }
 
          // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,7 +136,8 @@ function ViewInvoices() {
                         }
                     <button type='submit' className="submitButton">Submit</button>
                 </form>
-                <div> {view && <p>Invoices found for query dates {new Date(dateFrom).toDateString()} to {new Date(dateTo).toDateString()} for {employeeList.join(', ')}</p>}
+                <div> {view && user.position === "admin" && <p>Invoices found for query dates {new Date(dateFrom).toDateString()} to {new Date(dateTo).toDateString()} for {employeeList.join(', ')}</p>}
+                {view && user.position === "employee" && <p>Invoices found for query dates {new Date(dateFrom).toDateString()} to {new Date(dateTo).toDateString()} for {user.name}</p>}
                     {view && invoice.map((item, id) => ( 
                         <InvoiceNote item={item} key={id} />
                     ))
