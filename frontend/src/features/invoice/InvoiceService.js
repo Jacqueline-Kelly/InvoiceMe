@@ -13,6 +13,7 @@ const createInvoice = async(file) => {
       }
     )
     if (response.data) {
+      console.log(response.data)
       localStorage.setItem('invoice', JSON.stringify(response.data)) //if image succesfully uploaded, store the URL, filename, and total amount.
     }
     return response.data
