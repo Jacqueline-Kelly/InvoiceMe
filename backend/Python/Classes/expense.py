@@ -1,7 +1,5 @@
 import pytesseract
 from pytesseract import Output
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\Tesseract.exe'
-import re
 import cv2
 import matplotlib.pyplot as plt
 import sys
