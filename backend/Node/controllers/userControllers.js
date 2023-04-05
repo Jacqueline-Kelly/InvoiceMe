@@ -87,7 +87,7 @@ const registerUser = asyncHandler(async(req, res, next) => {
         formDataCopy.timestamp = serverTimestamp()
 
         await setDoc(doc(db, "users", user.uid), formDataCopy)
-        console.log('success')
+
         res.locals.data = {'email': email, 'password': password}
         next()
 

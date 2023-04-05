@@ -4,7 +4,9 @@ const FileExport = ({invoice, to, from}) => {
 
     const onClick = async(e) => {
         e.preventDefault(); 
-        const exportData = invoice.map(({url, imageInvoiceId, timestamp, name, email, date, location, category, otherCategory, vendor, currency, amount, compensated}) => ({name, email, date, location, category, otherCategory, vendor, currency, amount, compensated}));
+  
+        const exportData = invoice.map(({name, date, location, category, otherCategory, vendor, currency, amount, compensated}) => ({name, date: new Date(date.seconds * 1000), location, category, otherCategory, vendor, currency, amount, compensated}));
+
         const ws = utils.json_to_sheet(exportData);
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, "Invoices");
