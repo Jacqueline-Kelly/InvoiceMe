@@ -1,6 +1,8 @@
-# ReceiptApp
+# InvoiceMe
 
 This receipt app, which we are calling "InvoiceMe," is designed to offer small businesses a solutions for tracking their employees' receipts and invoices for reimbursement and tax purposes. The project overview and tech overview can be found below.
+
+This repo is a code sample from the codebase for demo purposes.
 
 ***Project Overview***
 
